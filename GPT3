@@ -1,0 +1,40 @@
+#GPT3 openai key used to train the model on testing data set
+
+## Import necessary libraries
+import requests
+import pandas as pd
+from sklearn.metrics import accuracy_score, precision_score, f1_score import matplotlib.pyplot as plt
+from sklearn.metrics import classification_report
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Load the data and set your OpenAI API key
+# Set your OpenAI API key
+api_key = 'your-openai-api-key'
+# Load your csv data
+csv_path = r'location-of-file' 
+df = pd.read_csv(csv_path)
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Check the dataframe 'df' 
+df= df.head(200) 
+df.head(10)
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Lets define our prompt and generate a prediction for single data for testing
+# Define the prompt for sentiment prediction
+prompt = "Given the text, predict the sentiment as either positive, negative or neutral:" # generate pridiction for single data
+text = df['text'][9]
+
+test_payload = {"model": "text-davinci-003","prompt": f"{prompt} {text}","max_tokens": 100 }
+
+test_url = "https://api.openai.com/v1/completions" 
+
+test_headers = {"Content-Type": "application/json",
+                "Authorization": f"Bearer {api_key}" }
+
+test_response = requests.post(test_url, json=test_payload, headers=test_headers) test_data = test_response.json()
+predictions = test_data['choices'][0]['text'].strip()
+predictions
+
+# The output we got is "Positive"
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+ 
+ 
+ 
